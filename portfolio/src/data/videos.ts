@@ -30,12 +30,12 @@ export const videos: Video[] = [
 	},
 	{
 		slug: 'gyuris-debrecen-2026-03-06',
-		title: 'Gyuris — Debrecen',
+		title: 'Gyuris',
 		category: 'Koncert',
 		date: '2026-03-06',
 		cover: '/images/gyuris debrecen 2026.03.06/thumbnail.png',
 		url: 'https://youtu.be/I0_si-sfPYs',
 		folder: 'images/gyuris debrecen 2026.03.06',
-		description: 'Gyuris koncertvideója, amit 2026 márciusában készítettem a debreceni Kölcsey Központban.',
+		description: 'Gyuris koncertvideója, amit 2026 márciusában készítettem a debreceni Víztoronykertben.',
 	},
 ];

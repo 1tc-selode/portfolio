@@ -20,6 +20,61 @@ export function formatDate(date: string): string {
 
 export const projects: Project[] = [
 	{
+		slug: 'ameliore-crew-2026-01-24',
+		title: 'AMÉLIORÉ CREW',
+		category: 'Editorial',
+		date: '2026-01-24',
+		description: '',
+		credits: [
+			{ role: 'Ruha', name: 'Ameliore Studios', url: 'https://www.instagram.com/ameliorestudios/' },
+			{ role: 'Modell', name: 'Molnár Virág', url: 'https://www.instagram.com/_molnar.virag_/' },
+			{ role: 'Modell', name: 'Gyönki Dorina', url: 'https://www.instagram.com/dorrcii/' },
+			{ role: 'Modell', name: 'Seres Lukács', url: 'https://www.instagram.com/a_l_u_k_e/' },
+
+		],
+		cover: '/images/ameliore crew 2026-01-24/DSC05678.jpg',
+		folder: 'images/ameliore crew 2026-01-24',
+	},
+	{
+		slug: 'elefant-2025-11-29',
+		title: 'Elefánt',
+		category: 'Koncert',
+		date: '2025-11-29',
+		description: 'Szeged - IH Rendezvényközpont',
+		cover: '/images/elefant 2025-11-29/DSC03943-Enhanced-NR.jpg',
+		folder: 'images/elefant 2025-11-29',
+	},
+	{
+		slug: 'filo-2025-11-22',
+		title: 'FILO',
+		category: 'Koncert',
+		date: '2025-11-22',
+		description: 'Szeged - Jate Klub',
+		cover: '/images/filo 2025-11-22/DSC00437-Enhanced-NR-2.jpg',
+		folder: 'images/filo 2025-11-22',
+	},
+	{
+		slug: 'analog-balaton-2025-11-09',
+		title: 'Analog Balaton',
+		category: 'Koncert',
+		date: '2025-11-09',
+		description: 'Debrecen, Klinika Egyetemi Klubb.',
+		cover: '/images/analog balaton 2025-11-09/DSC08124-Enhanced-NR másolat2.jpg',
+		folder: 'images/analog balaton 2025-11-09',
+	},
+	{
+		slug: 'villogezma-2025-10-31',
+		title: 'Gezma Villő',
+		category: 'Editorial',
+		date: '2025-10-31',
+		description: '',
+		credits: [
+			{ role: 'Modell', name: 'Gezma Villő', url: 'https://www.instagram.com/villogezma/' },
+		],
+		cover: '/images/villogezma 2025-10-31/DSC05949.jpg',
+		folder: 'images/villogezma 2025-10-31',
+	},
+	{
 		slug: 'hairkraft-2025',
 		title: 'HAIR/KRAFT 2025',
 		category: 'Más',
@@ -80,7 +135,7 @@ export const projects: Project[] = [
 	},
 	{
 		slug: 'greece-2024',
-		title: 'Görögország 2024',
+		title: 'Görögország',
 		category: 'Más',
 		date: '2024-09-30',
 		description: 'Görögországban készült fotósorozat 2024 szeptemberében. Iskolai szervezésű Erasmus kirándulás keretében.',
