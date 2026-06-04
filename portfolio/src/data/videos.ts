@@ -28,4 +28,14 @@ export const videos: Video[] = [
 			{ role: 'Kiadó', name: 'Raw Techniques Records', url: '' },
 		],
 	},
+	{
+		slug: 'gyuris-debrecen-2026-03-06',
+		title: 'Gyuris — Debrecen',
+		category: 'Koncert',
+		date: '2026-03-06',
+		cover: '/images/gyuris debrecen 2026.03.06/thumbnail.png',
+		url: 'https://youtu.be/I0_si-sfPYs',
+		folder: 'images/gyuris debrecen 2026.03.06',
+		description: 'Gyuris koncertvideója, amit 2026 márciusában készítettem a debreceni Kölcsey Központban.',
+	},
 ];

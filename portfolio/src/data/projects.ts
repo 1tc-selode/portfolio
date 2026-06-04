@@ -20,6 +20,19 @@ export function formatDate(date: string): string {
 
 export const projects: Project[] = [
 	{
+		slug: 'hairkraft-2025',
+		title: 'HAIR/KRAFT 2025',
+		category: 'Más',
+		date: '2025-10-28',
+		description: 'A Hair/Kraft egy fodrász- és barber szakmai esemény, ahol élő bemutatók, trendek és inspirációs show-k zajlanak.',
+		credits: [
+			{ role: 'Esemény', name: 'Hair/Kraft', url: 'https://www.instagram.com/hairkraft__/' },
+			{ role: 'Szervező', name: 'Beke Balázs', url: 'https://www.instagram.com/bekebalazs_/' },
+		],
+		cover: '/images/hairkraft 2025/DSC05783-Enhanced-NR.jpg',
+		folder: 'images/hairkraft 2025',
+	},
+	{
 		slug: 'co-lee-2025',
 		title: 'Co Lee',
 		category: 'Koncert',
