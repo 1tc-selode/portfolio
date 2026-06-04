@@ -1,13 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { projects } from '../data/projects';
+import { videos } from '../data/videos';
 
-const strip = [
-	{ src: '/images/hero-1.jpg', num: '01' },
-	{ src: '/images/hero-2.jpg', num: '02' },
-	{ src: '/images/hero-3.jpg', num: '03' },
-	{ src: '/images/hero-4.jpg', num: '04' },
-	{ src: '/images/hero-5.jpg', num: '05' },
+const allWork = [
+	...projects.map(p => ({ slug: p.slug, title: p.title, cover: p.cover, date: p.date, type: 'photo' as const })),
+	...videos.map(v => ({ slug: v.slug, title: v.title, cover: v.cover, date: v.date, type: 'video' as const })),
 ];
+
+const recent = allWork
+	.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+	.slice(0, 5);
 ---
 
 <Layout>
@@ -35,7 +38,7 @@ const strip = [
 					<p class="hero-sub">Fotózás - Videózás<br/>Debrecen / Budapest</p>
 				</div>
 				<div class="hero-img">
-					<img src="/images/hero-main.jpg" alt="kiemelt fotó" />
+					<img src="/images/fooldal/DSC08221.jpg" alt="kiemelt fotó" />
 				</div>
 			</section>
 
@@ -47,12 +50,13 @@ const strip = [
 
 			<!-- Vízszintes képsor -->
 			<section class="strip">
-				{strip.map((p) => (
-					<div class="strip-item">
+				{recent.map((item) => (
+					<a href={item.type === 'video' ? `/videok/${item.slug}` : `/kepek/${item.slug}`} class="strip-item">
 						<div class="strip-img">
-							<img src={p.src} alt="fotó" loading="lazy" />
+							<img src={item.cover} alt={item.title} loading="lazy" />
 						</div>
-					</div>
+						{item.type === 'video' && <span class="video-badge">▶</span>}
+					</a>
 				))}
 			</section>
 
@@ -179,10 +183,32 @@ const strip = [
 	}
 
 	.strip-item {
+		position: relative;
+		display: block;
 		border-right: 1px solid transparent;
+		text-decoration: none;
+		color: inherit;
 	}
 
 	.strip-item:last-child { border-right: none; }
+
+	.video-badge {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background: rgba(0,0,0,0.55);
+		color: #fff;
+		font-size: 1.4rem;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		pointer-events: none;
+		opacity: 0.9;
+	}
 
 	.strip-img {
 		width: 100%;
