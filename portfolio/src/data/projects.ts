@@ -20,13 +20,29 @@ export function formatDate(date: string): string {
 
 export const projects: Project[] = [
 	{
+		slug: 'ameliore-common-ground-2026-02-20',
+		title: 'COMMON GROUND',
+		category: 'Editorial',
+		date: '2026-02-20',
+		description: '',
+		credits: [
+			{ role: 'Ruha', name: 'Amélioré Studios', url: 'https://www.instagram.com/ameliorestudios/' },
+			{ role: 'Modell', name: 'Layla Hosny', url: 'https://www.instagram.com/laylaaahosnyy/' },
+			{ role: 'Modell', name: 'Armin Polanen', url: 'https://www.instagram.com/arminpolanen/' },
+			{ role: 'Modell', name: 'Jul Eran', url: 'https://www.instagram.com/jul.eran/' },
+
+		],
+		cover: '/images/common ground photos/DSC06612.jpg',
+		folder: 'images/common ground photos',
+	},
+	{
 		slug: 'ameliore-crew-2026-01-24',
 		title: 'AMÉLIORÉ CREW',
 		category: 'Editorial',
 		date: '2026-01-24',
 		description: '',
 		credits: [
-			{ role: 'Ruha', name: 'Ameliore Studios', url: 'https://www.instagram.com/ameliorestudios/' },
+			{ role: 'Ruha', name: 'Amélioré Studios', url: 'https://www.instagram.com/ameliorestudios/' },
 			{ role: 'Modell', name: 'Molnár Virág', url: 'https://www.instagram.com/_molnar.virag_/' },
 			{ role: 'Modell', name: 'Gyönki Dorina', url: 'https://www.instagram.com/dorrcii/' },
 			{ role: 'Modell', name: 'Seres Lukács', url: 'https://www.instagram.com/a_l_u_k_e/' },
@@ -98,14 +114,14 @@ export const projects: Project[] = [
 	},
 	{
 		slug: 'ameliore-x-mixymo-x-pearly-x-catfight',
-		title: 'Ameliore × Mixymo × Pearly × Cat Fight',
+		title: 'Amélioré × Mixymo × Pearly × Cat Fight',
 		category: 'Editorial',
 		date: '2025-09-04',
 		description: 'Ruha- és ékszermárka közös stúdiós shootja 2025 szeptemberében. A shootot Csepeli Dalma szervezte, aki engem is meghívott fotósként.',
 		credits: [
 			{ role: 'Szervező / Fotós', name: 'Csepeli Dalma', url: 'https://www.instagram.com/dalmacsepeli/' },
 			{ role: 'Modell', name: 'Seres Lukács', url: 'https://www.instagram.com/a_l_u_k_e/' },
-			{ role: 'Ruha', name: 'Ameliore Studios', url: 'https://www.instagram.com/ameliorestudios/' },
+			{ role: 'Ruha', name: 'Amélioré Studios', url: 'https://www.instagram.com/ameliorestudios/' },
 			{ role: 'Ruha', name: 'Cat Fight Thrift', url: 'https://www.instagram.com/catfight_thrift/' },
 			{ role: 'Ékszer', name: 'Pearly Jewels', url: 'https://www.instagram.com/pearlyjewels.hu/' },
 			{ role: 'Sapka', name: 'Mixymo Custom Cap', url: 'https://www.instagram.com/mixymo_custom_cap/' },

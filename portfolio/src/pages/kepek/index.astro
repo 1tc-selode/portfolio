@@ -43,18 +43,6 @@ const sorted = [...projects].sort((a, b) => b.date.localeCompare(a.date));
 		</div>
 
 		<script>
-			// Fekvő képeknél contain, állóknál cover
-			document.querySelectorAll('.project-cover img').forEach(img => {
-				const el = img as HTMLImageElement;
-				const check = () => {
-					if (el.naturalWidth > el.naturalHeight) {
-						el.classList.add('is-landscape');
-					}
-				};
-				if (el.complete) check();
-				else el.addEventListener('load', check);
-			});
-
 			document.querySelectorAll('.filter-btn').forEach(btn => {
 				btn.addEventListener('click', () => {
 					document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -176,11 +164,7 @@ const sorted = [...projects].sort((a, b) => b.date.localeCompare(a.date));
 		transition: transform 0.45s ease;
 	}
 
-	.project-cover img.is-landscape {
-		object-fit: contain;
-	}
-
-	.project-card:hover .project-cover img:not(.is-landscape) {
+	.project-card:hover .project-cover img {
 		transform: scale(1.04);
 	}
 

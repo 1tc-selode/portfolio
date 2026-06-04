@@ -12,6 +12,40 @@ export interface Video {
 
 export const videos: Video[] = [
 	{
+		slug: 'ameliore-common-ground-i-2026-02-20',
+		title: 'COMMON GROUND I/IV',
+		category: 'Shorts',
+		date: '2026-02-20',
+		cover: '/images/common ground/Képernyőfelvétel (175).png',
+		url: 'https://youtu.be/r9c9HM_NoQ0',
+		credits: [
+			{ role: 'Ruha', name: 'Amélioré Studios', url: 'https://www.instagram.com/ameliorestudios/' },
+			{ role: 'Modell', name: 'Layla Hosny', url: 'https://www.instagram.com/laylaaahosnyy/' },
+			{ role: 'Modell', name: 'Armin Polanen', url: 'https://www.instagram.com/arminpolanen/' },
+			{ role: 'Modell', name: 'Jul Eran', url: 'https://www.instagram.com/jul.eran/' },
+
+		],
+		folder: 'images/common ground',
+		description: '',
+	},
+	{
+		slug: 'ameliore-common-ground-ii-2026-02-20',
+		title: 'COMMON GROUND II/IV',
+		category: 'Shorts',
+		date: '2026-02-20',
+		cover: '/images/common ground/Képernyőfelvétel (173).png',
+		url: 'https://www.youtube.com/watch?v=sI93SZeLndM',
+		credits: [
+			{ role: 'Ruha', name: 'Amélioré Studios', url: 'https://www.instagram.com/ameliorestudios/' },
+			{ role: 'Modell', name: 'Layla Hosny', url: 'https://www.instagram.com/laylaaahosnyy/' },
+			{ role: 'Modell', name: 'Armin Polanen', url: 'https://www.instagram.com/arminpolanen/' },
+			{ role: 'Modell', name: 'Jul Eran', url: 'https://www.instagram.com/jul.eran/' },
+
+		],
+		folder: 'images/common ground',
+		description: '',
+	},
+	{
 		slug: 'marslakók-real-jarat',
 		title: 'Marslakók — REAL JÁRAT',
 		category: 'Videóklip',
@@ -22,10 +56,13 @@ export const videos: Video[] = [
 		description: 'Az első klippem amit valaha csináltam, a Marslakóknak készítettem a REAL JÁRAT zenéjükre.',
 		credits: [
 			{ role: 'Rendező / Operatőr / Vágó', name: 'Seletye Odett', url: '' },
-			{ role: 'Szöveg', name: 'Shiro, SAEH', url: '' },
-			{ role: 'Producer', name: 'Trashyno, Shiro', url: '' },
-			{ role: 'Mix & Master', name: 'Trashyno', url: '' },
-			{ role: 'Kiadó', name: 'Raw Techniques Records', url: '' },
+			{ role: 'Zene', name: 'Marslakók', url: 'https://www.instagram.com/marslakok._/' },
+			{ role: 'Szöveg', name: 'SAEH', url: 'https://www.instagram.com/nardaiaron/' },
+			{ role: 'Szöveg', name: 'Shiro', url: 'https://www.instagram.com/shiro_2278/' },
+			{ role: 'Producer', name: 'Trashyno', url: 'https://www.instagram.com/trashyno__/' },
+			{ role: 'Producer', name: 'Shiro', url: 'https://www.instagram.com/shiro_2278/' },
+			{ role: 'Mix & Master', name: 'Trashyno', url: 'https://www.instagram.com/trashyno__/' },
+			{ role: 'Kiadó', name: 'Raw Techniques Records', url: 'https://www.instagram.com/rawtechniques/' },
 		],
 	},
 	{
