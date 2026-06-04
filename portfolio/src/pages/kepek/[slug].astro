@@ -62,6 +62,7 @@ if (photos.length === 0 && project.folder) {
 
 		<!-- Jobb oldal: képek -->
 		<div class="project-photos">
+			<div class="photos-loading" id="photos-loading">Betöltés…</div>
 			<div class="col" id="col-0"></div>
 			<div class="col" id="col-1"></div>
 			<div class="col col-third" id="col-2"></div>
@@ -84,6 +85,7 @@ if (photos.length === 0 && project.folder) {
 			let remaining = photos.length;
 
 			function placeImages() {
+				document.getElementById('photos-loading').style.display = 'none';
 				photos.forEach((src, i) => {
 					const shortest = colHeights.indexOf(Math.min(...colHeights));
 					colHeights[shortest] += ratios[i];
@@ -317,6 +319,18 @@ if (photos.length === 0 && project.folder) {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		align-items: start;
+	}
+
+	.photos-loading {
+		grid-column: 1 / -1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 300px;
+		font-size: 0.85rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: #aaa;
 	}
 
 	.col {

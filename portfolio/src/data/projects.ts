@@ -20,6 +20,24 @@ export function formatDate(date: string): string {
 
 export const projects: Project[] = [
 	{
+		slug: 'kain 2026-03-06',
+		title: 'Kain',
+		category: 'Koncert',
+		date: '2026-03-06',
+		description: 'Debrecen, Víztorony - Gyuris\nSupport: Kain',
+		cover: '/images/kain 2026-03-06/DSC07708-Enhanced-NR.jpg',
+		folder: 'images/kain 2026-03-06',
+	},
+	{
+		slug: 'gyuris 2026-03-06',
+		title: 'Gyuris',
+		category: 'Koncert',
+		date: '2026-03-06',
+		description: 'Debrecen, Víztorony\nSupport: Kain',
+		cover: '/images/gyuris 2026-03-06/DSC08097-Enhanced-NR-2.jpg',
+		folder: 'images/gyuris 2026-03-06',
+	},
+	{
 		slug: 'ameliore-common-ground-2026-02-20',
 		title: 'COMMON GROUND',
 		category: 'Editorial',
