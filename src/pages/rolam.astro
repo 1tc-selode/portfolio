@@ -1,0 +1,232 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<header>
+		<a href="/" class="logo">SELETYE ODETT</a>
+		<nav>
+			<a href="/kepek">Képek</a>
+			<a href="/videok">Videók</a>
+			<a href="/rolam" class="active">Rólam</a>
+			<a href="mailto:odettphotography@gmail.com">Kapcsolat</a>
+		</nav>
+	</header>
+
+	<div class="about-layout">
+
+		<!-- Bal: fotók -->
+		<div class="about-images">
+			<div class="img-main">
+				<img src="/images/IMG_6937.PNG" alt="Seletye Odett" />
+			</div>
+		</div>
+
+		<!-- Jobb: szöveg -->
+		<div class="about-content">
+			<div class="about-title-row">
+				<span class="display label">Rólam</span>
+			</div>
+
+			<div class="about-name-block">
+				<h1 class="display about-name">Seletye<br/>Odett</h1>
+				<p class="about-tagline">Fotós — Videós<br/>Debrecen / Budapest</p>
+			</div>
+
+			<div class="about-bio">
+				<p>
+					Vizuális történetmesélés koncerteken, portrékon és kreatív projekteken keresztül —
+					Debrecenből indulva, 2026-tól Budapestről.
+				</p>
+				<p>
+					2021 óta dolgozom kamerával. Specialitásom az élő hangzás és az emberi
+					pillanat megragadása: fesztiválokon, stúdiókban és utcán egyaránt.
+					2025-ben a Campus Fesztiválon több előadót fotóztam és videóztam.
+				</p>
+				<p>
+					Nyitott vagyok együttműködésre előadókkal, márkákkal és
+					kreatív csapatokkal — legyen szó albumborítóról, videóklipről
+					vagy egyedi portrésorozatról.
+				</p>
+			</div>
+		</div>
+
+	</div>
+
+	<footer>
+		<span>© 2025 Seletye Odett</span>
+		<div class="footer-links">
+			<a href="mailto:odettphotography@gmail.com">E-mail</a>
+			<a href="https://instagram.com/odettphoto" target="_blank" rel="noopener">Instagram</a>
+			<a href="https://tiktok.com/@odettphoto" target="_blank" rel="noopener">TikTok</a>
+		</div>
+	</footer>
+</Layout>
+
+<style>
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 22px 32px;
+		border-bottom: 1px solid #999;
+	}
+
+	.logo {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1.3rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	nav {
+		display: flex;
+		gap: 32px;
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #555;
+	}
+
+	nav a:hover, nav a.active { color: #111; }
+
+	/* ── LAYOUT ── */
+	.about-layout {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		min-height: calc(100vh - 69px - 53px);
+	}
+
+	/* ── KÉPEK ── */
+	.about-images {
+		border-right: 1px solid #999;
+	}
+
+	.img-main {
+		background: #ccc;
+		overflow: hidden;
+		height: 100%;
+		display: flex;
+		align-items: flex-end;
+	}
+
+	.img-main img,
+	.img-secondary img {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		display: block;
+	}
+
+	.img-secondary {
+		background: #bbb;
+		overflow: hidden;
+	}
+
+	/* ── SZÖVEG ── */
+	.about-content {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.about-title-row {
+		padding: 14px 28px;
+		border-bottom: 1px solid #999;
+	}
+
+	.label {
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+	}
+
+	.about-name-block {
+		padding: 28px 28px 24px;
+		border-bottom: 1px solid #999;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		gap: 16px;
+	}
+
+	.about-name {
+		font-size: clamp(2.8rem, 5vw, 5rem);
+		line-height: 0.9;
+	}
+
+	.about-tagline {
+		font-size: 0.75rem;
+		color: #777;
+		line-height: 1.7;
+		text-align: right;
+		flex-shrink: 0;
+	}
+
+	.about-bio {
+		padding: 28px 28px;
+		flex: 1;
+	}
+
+	.about-bio p {
+		font-size: 0.87rem;
+		line-height: 1.75;
+		color: #444;
+		margin-bottom: 16px;
+	}
+
+	.about-bio p:last-child { margin-bottom: 0; }
+
+	.about-contact {
+		padding: 18px 28px;
+	}
+
+	.contact-link {
+		font-size: 0.82rem;
+		color: #555;
+	}
+
+	.contact-link:hover { color: #111; }
+
+	/* ── FOOTER ── */
+	footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 32px;
+		border-top: 1px solid #999;
+		font-size: 0.78rem;
+		color: #666;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.footer-links {
+		display: flex;
+		gap: 20px;
+	}
+
+	.footer-links a:hover { color: #111; }
+
+	/* ── RESPONSIVE ── */
+	@media (max-width: 760px) {
+		.about-layout {
+			grid-template-columns: 1fr;
+		}
+
+		.about-images {
+			border-right: none;
+			border-bottom: 1px solid #999;
+			height: 320px;
+		}
+
+		.about-name-block { flex-direction: column; align-items: flex-start; }
+		.about-tagline { text-align: left; }
+
+		header { padding: 18px 16px; }
+		footer { padding: 16px; }
+
+		.about-title-row { padding: 14px 16px; }
+		.about-name-block { padding: 20px 16px; }
+		.about-bio { padding: 20px 16px; }
+	}
+</style>

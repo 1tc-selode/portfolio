@@ -1,0 +1,439 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { projects, formatDate } from '../../data/projects';
+import fs from 'fs';
+import path from 'path';
+
+export function getStaticPaths() {
+	return projects.map((project) => ({
+		params: { slug: project.slug },
+		props: { project },
+	}));
+}
+
+const { project } = Astro.props;
+
+let photos: string[] = project.photos ?? [];
+if (photos.length === 0 && project.folder) {
+	const dir = path.join(process.cwd(), 'public', project.folder);
+	photos = fs.readdirSync(dir)
+		.filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f))
+		.sort()
+		.map(f => `/${project.folder}/${f}`);
+	// Put cover first
+	const coverFile = project.cover.split('/').pop()!;
+	photos = [project.cover, ...photos.filter(p => !p.endsWith(coverFile))];
+}
+---
+
+<Layout>
+	<header>
+		<a href="/" class="logo">SELETYE ODETT</a>
+		<nav>
+			<a href="/kepek" class="active">Képek</a>
+			<a href="/videok">Videók</a>
+			<a href="/rolam">Rólam</a>
+			<a href="mailto:odettphotography@gmail.com">Kapcsolat</a>
+		</nav>
+	</header>
+
+	<div class="project-layout">
+		<!-- Bal oldal: sticky info -->
+		<aside class="project-info">
+			<div class="info-top">
+				<p class="back"><a href="/kepek"><- Vissza</a></p>
+			</div>
+			<div class="info-body">
+				<h1 class="project-title display">{project.title}</h1>
+				<div class="meta-row">
+					<span class="meta-cat">{project.category}</span>
+					<span class="meta-year">{formatDate(project.date)}</span>
+				</div>
+				<p class="project-desc">{project.description}</p>
+				{project.credits && (
+					<ul class="credits">
+						{project.credits.map(c => (
+							<li><span class="credit-role">{c.role}</span><a href={c.url} target="_blank" rel="noopener" class="credit-name">{c.name}</a></li>
+						))}
+					</ul>
+				)}
+			</div>
+		</aside>
+
+		<!-- Jobb oldal: képek -->
+		<div class="project-photos">
+			<div class="col" id="col-0"></div>
+			<div class="col" id="col-1"></div>
+			<div class="col col-third" id="col-2"></div>
+		</div>
+
+		<!-- Lightbox -->
+		<div class="lightbox" id="lightbox" aria-hidden="true">
+			<button class="lb-close" id="lb-close">✕</button>
+			<button class="lb-prev" id="lb-prev">‹</button>
+			<button class="lb-next" id="lb-next">›</button>
+			<img class="lb-img" id="lb-img" src="" alt="" />
+			<span class="lb-counter" id="lb-counter"></span>
+		</div>
+
+		<script define:vars={{ photos: photos, title: project.title }}>
+			const numCols = window.innerWidth <= 760 ? 2 : 3;
+			const cols = [document.getElementById('col-0'), document.getElementById('col-1'), document.getElementById('col-2')].slice(0, numCols);
+			const colHeights = new Array(numCols).fill(0);
+			const ratios = new Array(photos.length).fill(2 / 3);
+			let remaining = photos.length;
+
+			function placeImages() {
+				photos.forEach((src, i) => {
+					const shortest = colHeights.indexOf(Math.min(...colHeights));
+					colHeights[shortest] += ratios[i];
+					const img = document.createElement('img');
+					img.src = src;
+					img.alt = `${title} – ${i + 1}`;
+					img.loading = i < 6 ? 'eager' : 'lazy';
+					img.dataset.index = String(i);
+					img.style.cursor = 'pointer';
+					img.style.pointerEvents = 'auto';
+					img.addEventListener('click', () => openLightbox(i));
+					cols[shortest].appendChild(img);
+				});
+			}
+
+			photos.forEach((src, i) => {
+				const pre = new Image();
+				pre.onload = () => {
+					if (pre.naturalWidth > 0) ratios[i] = pre.naturalHeight / pre.naturalWidth;
+					if (--remaining === 0) placeImages();
+				};
+				pre.onerror = () => { if (--remaining === 0) placeImages(); };
+				pre.src = src;
+			});
+
+			let current = 0;
+			const lightbox = document.getElementById('lightbox');
+			const lbImg = document.getElementById('lb-img');
+			const lbCounter = document.getElementById('lb-counter');
+
+			function openLightbox(index) {
+				current = index;
+				lbImg.src = photos[current];
+				lbImg.alt = `${title} – ${current + 1}`;
+				lbCounter.textContent = `${current + 1} / ${photos.length}`;
+				lightbox.classList.add('active');
+				document.body.style.overflow = 'hidden';
+			}
+
+			function closeLightbox() {
+				lightbox.classList.remove('active');
+				document.body.style.overflow = '';
+			}
+
+			function prev() {
+				current = (current - 1 + photos.length) % photos.length;
+				lbImg.src = photos[current];
+				lbCounter.textContent = `${current + 1} / ${photos.length}`;
+			}
+
+			function next() {
+				current = (current + 1) % photos.length;
+				lbImg.src = photos[current];
+				lbCounter.textContent = `${current + 1} / ${photos.length}`;
+			}
+
+			document.getElementById('lb-close').addEventListener('click', closeLightbox);
+			document.getElementById('lb-prev').addEventListener('click', prev);
+			document.getElementById('lb-next').addEventListener('click', next);
+			lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+			document.addEventListener('keydown', (e) => {
+				if (!lightbox.classList.contains('active')) return;
+				if (e.key === 'ArrowLeft') prev();
+				if (e.key === 'ArrowRight') next();
+				if (e.key === 'Escape') closeLightbox();
+			});
+		</script>
+	</div>
+
+	<footer>
+		<span>© 2025 Seletye Odett</span>
+		<div class="footer-links">
+			<a href="mailto:odettphotography@gmail.com">E-mail</a>
+			<a href="https://instagram.com/odettphoto" target="_blank" rel="noopener">Instagram</a>
+			<a href="https://tiktok.com/@odettphoto" target="_blank" rel="noopener">TikTok</a>
+		</div>
+	</footer>
+</Layout>
+
+<style>
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 22px 32px;
+		border-bottom: 1px solid #999;
+	}
+
+	.logo {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1.3rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	nav {
+		display: flex;
+		gap: 32px;
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #555;
+	}
+
+	nav a:hover, nav a.active { color: #111; }
+
+	/* ── LAYOUT ── */
+	.project-layout {
+		display: grid;
+		grid-template-columns: 300px 1fr;
+		min-height: calc(100vh - 69px - 53px);
+	}
+
+	/* ── INFO PANEL ── */
+	.project-info {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		border-right: 1px solid #999;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+	}
+
+	.info-top {
+		border-bottom: 1px solid #999;
+	}
+
+	.back {
+		padding: 14px 20px 16px;
+		font-size: 0.78rem;
+	}
+
+	.back a { color: #888; }
+	.back a:hover { color: #111; }
+
+	.info-label-row {
+		padding: 10px 20px 14px;
+	}
+
+	.info-label {
+		font-size: 0.72rem;
+		letter-spacing: 0.1em;
+		color: #aaa;
+	}
+
+	.info-body {
+		padding: 24px 20px;
+		flex: 1;
+	}
+
+	.project-title {
+		font-size: clamp(1.8rem, 3vw, 2.8rem);
+		line-height: 0.95;
+		margin-bottom: 16px;
+	}
+
+	.meta-row {
+		display: flex;
+		gap: 12px;
+		align-items: baseline;
+		margin-bottom: 20px;
+	}
+
+	.meta-cat {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: #888;
+	}
+
+	.meta-year {
+		font-size: 0.72rem;
+		color: #bbb;
+	}
+
+	.project-desc {
+		font-size: 0.85rem;
+		line-height: 1.75;
+		color: #555;
+		white-space: pre-line;
+	}
+
+	.credits {
+		list-style: none;
+		padding: 0;
+		margin-top: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.credits li {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.credit-role {
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: #aaa;
+	}
+
+	.credit-name {
+		font-size: 0.85rem;
+		color: #333;
+		text-decoration: none;
+	}
+
+	.credit-name:hover {
+		text-decoration: underline;
+	}
+
+	.info-footer {
+		padding: 16px 20px;
+	}
+
+	.all-projects {
+		font-size: 0.78rem;
+		color: #888;
+	}
+
+	.all-projects:hover { color: #111; }
+
+	/* ── PHOTOS ── */
+	.project-photos {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		align-items: start;
+	}
+
+	.col {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.col-third { display: flex; }
+
+	.col img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	/* ── LIGHTBOX ── */
+	.lightbox {
+		display: none;
+		position: fixed;
+		inset: 0;
+		background: rgba(0,0,0,0.92);
+		z-index: 1000;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lightbox.active {
+		display: flex;
+	}
+
+	.lb-img {
+		max-width: 90vw;
+		max-height: 90vh;
+		object-fit: contain;
+		display: block;
+		pointer-events: none;
+	}
+
+	.lb-close {
+		position: fixed;
+		top: 20px;
+		right: 24px;
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 1.5rem;
+		cursor: pointer;
+		opacity: 0.7;
+		line-height: 1;
+	}
+
+	.lb-close:hover { opacity: 1; }
+
+	.lb-prev,
+	.lb-next {
+		position: fixed;
+		top: 50%;
+		transform: translateY(-50%);
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 3rem;
+		cursor: pointer;
+		opacity: 0.5;
+		padding: 0 20px;
+		line-height: 1;
+	}
+
+	.lb-prev { left: 0; }
+	.lb-next { right: 0; }
+	.lb-prev:hover, .lb-next:hover { opacity: 1; }
+
+	.lb-counter {
+		position: fixed;
+		bottom: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		color: #aaa;
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+	}
+
+	/* ── FOOTER ── */
+	footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 32px;
+		border-top: 1px solid #999;
+		font-size: 0.78rem;
+		color: #666;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.footer-links {
+		display: flex;
+		gap: 20px;
+	}
+
+	.footer-links a:hover { color: #111; }
+
+	/* ── RESPONSIVE ── */
+	@media (max-width: 760px) {
+		.project-layout { grid-template-columns: 1fr; }
+
+		.project-info {
+			position: static;
+			height: auto;
+			border-right: none;
+			border-bottom: 1px solid #999;
+		}
+
+		.project-photos { grid-template-columns: 1fr 1fr; }
+		.col-third { display: none !important; }
+
+		header { padding: 18px 16px; }
+		footer { padding: 16px; }
+	}
+</style>

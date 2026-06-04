@@ -1,0 +1,491 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { videos } from '../../data/videos';
+import fs from 'fs';
+import path from 'path';
+
+export function getStaticPaths() {
+	return videos.map((video) => ({
+		params: { slug: video.slug },
+		props: { video },
+	}));
+}
+
+const { video } = Astro.props;
+
+// Extract YouTube/Vimeo embed URL
+function getEmbedUrl(url: string): string {
+	if (!url) return '';
+	const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+	if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+	const vimeo = url.match(/vimeo\.com\/(\d+)/);
+	if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
+	return url;
+}
+
+const embedUrl = getEmbedUrl(video.url);
+
+let galleryPhotos: string[] = [];
+if (video.folder) {
+	const dir = path.join(process.cwd(), 'public', video.folder);
+	const coverFile = video.cover.split('/').pop()!;
+	galleryPhotos = fs.readdirSync(dir)
+		.filter(f => /\.(jpg|jpeg|png|webp|gif)$/i.test(f) && f !== coverFile)
+		.sort()
+		.map(f => `/${video.folder}/${f}`);
+}
+---
+
+<Layout>
+	<header>
+		<a href="/" class="logo">SELETYE ODETT</a>
+		<nav>
+			<a href="/kepek">Képek</a>
+			<a href="/videok" class="active">Videók</a>
+			<a href="/rolam">Rólam</a>
+			<a href="mailto:odettphotography@gmail.com">Kapcsolat</a>
+		</nav>
+	</header>
+
+	<div class="project-layout">
+		<!-- Bal oldal: sticky info -->
+		<aside class="project-info">
+			<div class="info-top">
+				<p class="back"><a href="/videok">← Vissza</a></p>
+			</div>
+			<div class="info-body">
+				<h1 class="project-title display">{video.title}</h1>
+				<div class="meta-row">
+					<span class="meta-cat">{video.category}</span>
+					<span class="meta-year">{video.date}</span>
+				</div>
+				<p class="project-desc">{video.description}</p>
+				{video.credits && (
+					<ul class="credits">
+						{video.credits.map(c => (
+							<li><span class="credit-role">{c.role}</span>{c.url ? <a href={c.url} target="_blank" rel="noopener" class="credit-name">{c.name}</a> : <span class="credit-name">{c.name}</span>}</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</aside>
+
+		<!-- Jobb oldal: videó + galéria -->
+		<div class="video-area">
+			{embedUrl ? (
+				<div class="video-embed">
+					<iframe
+						src={embedUrl}
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+			) : (
+				<div class="video-placeholder">
+					<img src={video.cover} alt={video.title} />
+					<p class="coming-soon">Hamarosan elérhető</p>
+				</div>
+			)}
+			{galleryPhotos.length > 0 && (
+				<Fragment>
+					<h2 class="gallery-heading">Galéria</h2>
+					<div class="video-gallery">
+						<div class="gallery-col" id="gcol-0"></div>
+						<div class="gallery-col" id="gcol-1"></div>
+						<div class="gallery-col" id="gcol-2"></div>
+					</div>
+				</Fragment>
+			)}
+		</div>
+
+		<!-- Lightbox -->
+		<div class="lightbox" id="lightbox" aria-hidden="true">
+			<button class="lb-close" id="lb-close">✕</button>
+			<button class="lb-prev" id="lb-prev">‹</button>
+			<button class="lb-next" id="lb-next">›</button>
+			<img class="lb-img" id="lb-img" src="" alt="" />
+			<span class="lb-counter" id="lb-counter"></span>
+		</div>
+
+		<script define:vars={{ galleryPhotos, videoTitle: video.title }}>
+			if (galleryPhotos.length > 0) {
+				const cols = [document.getElementById('gcol-0'), document.getElementById('gcol-1'), document.getElementById('gcol-2')];
+				const colHeights = [0, 0, 0];
+				const ratios = new Array(galleryPhotos.length).fill(2/3);
+				let remaining = galleryPhotos.length;
+
+				function placeImages() {
+					galleryPhotos.forEach((src, i) => {
+						const shortest = colHeights.indexOf(Math.min(...colHeights));
+						colHeights[shortest] += ratios[i];
+						const img = document.createElement('img');
+						img.src = src;
+						img.alt = `${videoTitle} – ${i + 1}`;
+						img.loading = 'lazy';
+						img.style.cursor = 'pointer';
+						img.style.pointerEvents = 'auto';
+						img.addEventListener('click', () => openLightbox(i));
+						cols[shortest].appendChild(img);
+					});
+				}
+
+				galleryPhotos.forEach((src, i) => {
+					const pre = new Image();
+					pre.onload = () => {
+						if (pre.naturalWidth > 0) ratios[i] = pre.naturalHeight / pre.naturalWidth;
+						if (--remaining === 0) placeImages();
+					};
+					pre.onerror = () => { if (--remaining === 0) placeImages(); };
+					pre.src = src;
+				});
+
+				let current = 0;
+				const lightbox = document.getElementById('lightbox');
+				const lbImg = document.getElementById('lb-img');
+				const lbCounter = document.getElementById('lb-counter');
+
+				function openLightbox(index) {
+					current = index;
+					lbImg.src = galleryPhotos[current];
+					lbCounter.textContent = `${current + 1} / ${galleryPhotos.length}`;
+					lightbox.classList.add('active');
+					document.body.style.overflow = 'hidden';
+				}
+				function closeLightbox() {
+					lightbox.classList.remove('active');
+					document.body.style.overflow = '';
+				}
+				function prev() {
+					current = (current - 1 + galleryPhotos.length) % galleryPhotos.length;
+					lbImg.src = galleryPhotos[current];
+					lbCounter.textContent = `${current + 1} / ${galleryPhotos.length}`;
+				}
+				function next() {
+					current = (current + 1) % galleryPhotos.length;
+					lbImg.src = galleryPhotos[current];
+					lbCounter.textContent = `${current + 1} / ${galleryPhotos.length}`;
+				}
+				document.getElementById('lb-close').addEventListener('click', closeLightbox);
+				document.getElementById('lb-prev').addEventListener('click', prev);
+				document.getElementById('lb-next').addEventListener('click', next);
+				lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+				document.addEventListener('keydown', (e) => {
+					if (!lightbox.classList.contains('active')) return;
+					if (e.key === 'ArrowLeft') prev();
+					if (e.key === 'ArrowRight') next();
+					if (e.key === 'Escape') closeLightbox();
+				});
+			}
+		</script>
+	</div>
+
+	<footer>
+		<span>© 2025 Seletye Odett</span>
+		<div class="footer-links">
+			<a href="mailto:odettphotography@gmail.com">E-mail</a>
+			<a href="https://instagram.com/odettphoto" target="_blank" rel="noopener">Instagram</a>
+			<a href="https://tiktok.com/@odettphoto" target="_blank" rel="noopener">TikTok</a>
+		</div>
+	</footer>
+</Layout>
+
+<style>
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 22px 32px;
+		border-bottom: 1px solid #999;
+	}
+
+	.logo {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1.3rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	nav {
+		display: flex;
+		gap: 32px;
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #555;
+	}
+
+	nav a:hover, nav a.active { color: #111; }
+
+	/* ── LAYOUT ── */
+	.project-layout {
+		display: grid;
+		grid-template-columns: 300px 1fr;
+		min-height: calc(100vh - 69px - 53px);
+	}
+
+	/* ── INFO PANEL ── */
+	.project-info {
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		border-right: 1px solid #999;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+	}
+
+	.info-top {
+		border-bottom: 1px solid #999;
+	}
+
+	.back {
+		padding: 14px 20px 16px;
+		font-size: 0.78rem;
+	}
+
+	.back a { color: #888; }
+	.back a:hover { color: #111; }
+
+	.info-body {
+		padding: 24px 20px;
+		flex: 1;
+	}
+
+	.project-title {
+		font-size: clamp(1.8rem, 3vw, 2.8rem);
+		line-height: 0.95;
+		margin-bottom: 16px;
+	}
+
+	.meta-row {
+		display: flex;
+		gap: 12px;
+		align-items: baseline;
+		margin-bottom: 20px;
+	}
+
+	.meta-cat {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: #888;
+	}
+
+	.meta-year {
+		font-size: 0.72rem;
+		color: #bbb;
+	}
+
+	.project-desc {
+		font-size: 0.85rem;
+		line-height: 1.75;
+		color: #555;
+		white-space: pre-line;
+	}
+
+	.credits {
+		list-style: none;
+		padding: 0;
+		margin-top: 20px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.credits li {
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.credit-role {
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: #aaa;
+	}
+
+	.credit-name {
+		font-size: 0.85rem;
+		color: #333;
+		text-decoration: none;
+	}
+
+	.credit-name:hover {
+		text-decoration: underline;
+	}
+
+	/* ── VIDEO ── */
+	.video-area {
+		padding: 32px;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+
+	.gallery-heading {
+		text-align: center;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: #aaa;
+		font-weight: 400;
+		margin-top: 56px;
+		margin-bottom: 32px;
+	}
+
+	.video-gallery {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		align-items: start;
+	}
+
+	.gallery-col {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.gallery-col img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.video-embed {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16/9;
+	}
+
+	.video-embed iframe {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.video-placeholder {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16/9;
+		overflow: hidden;
+	}
+
+	.video-placeholder img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		filter: brightness(0.5);
+		display: block;
+	}
+
+	.coming-soon {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: #f5f4f0;
+		font-size: 0.85rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	/* ── LIGHTBOX ── */
+	.lightbox {
+		display: none;
+		position: fixed;
+		inset: 0;
+		background: rgba(0,0,0,0.92);
+		z-index: 1000;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lightbox.active { display: flex; }
+
+	.lb-img {
+		max-width: 90vw;
+		max-height: 90vh;
+		object-fit: contain;
+		display: block;
+		pointer-events: none;
+	}
+
+	.lb-close {
+		position: fixed;
+		top: 20px;
+		right: 24px;
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 1.5rem;
+		cursor: pointer;
+		opacity: 0.7;
+	}
+	.lb-close:hover { opacity: 1; }
+
+	.lb-prev, .lb-next {
+		position: fixed;
+		top: 50%;
+		transform: translateY(-50%);
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 3rem;
+		cursor: pointer;
+		opacity: 0.5;
+		line-height: 1;
+	}
+	.lb-prev:hover, .lb-next:hover { opacity: 1; }
+	.lb-prev { left: 20px; }
+	.lb-next { right: 20px; }
+
+	.lb-counter {
+		position: fixed;
+		bottom: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		color: #fff;
+		font-size: 0.8rem;
+		opacity: 0.6;
+	}
+
+	/* ── FOOTER ── */
+	footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 32px;
+		border-top: 1px solid #999;
+		font-size: 0.78rem;
+		color: #666;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.footer-links {
+		display: flex;
+		gap: 20px;
+	}
+
+	.footer-links a:hover { color: #111; }
+
+	/* ── RESPONSIVE ── */
+	@media (max-width: 760px) {
+		.project-layout { grid-template-columns: 1fr; }
+
+		.project-info {
+			position: static;
+			height: auto;
+			border-right: none;
+			border-bottom: 1px solid #999;
+		}
+
+		.video-area { padding: 0; }
+		header { padding: 18px 16px; }
+		footer { padding: 16px; }
+	}
+</style>

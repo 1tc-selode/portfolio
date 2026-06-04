@@ -1,11 +1,243 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const strip = [
+	{ src: '/images/hero-1.jpg', num: '01' },
+	{ src: '/images/hero-2.jpg', num: '02' },
+	{ src: '/images/hero-3.jpg', num: '03' },
+	{ src: '/images/hero-4.jpg', num: '04' },
+	{ src: '/images/hero-5.jpg', num: '05' },
+];
 ---
 
 <Layout>
-	<Welcome />
+	<div class="site-wrap">
+
+		<header>
+			<a href="/" class="logo"></a>
+			<nav>
+				<a href="/kepek">Képek</a>
+				<a href="/videok">Videók</a>
+				<a href="/rolam">Rólam</a>
+				<a href="mailto:odettphotography@gmail.com">Kapcsolat</a>
+			</nav>
+		</header>
+
+		<main>
+
+			<!-- Hero -->
+			<section class="hero">
+				<div class="hero-text">
+					<h1 class="display hero-name">
+						<span>Seletye</span>
+						<span>Odett</span>
+					</h1>
+					<p class="hero-sub">Fotózás - Videózás<br/>Debrecen / Budapest</p>
+				</div>
+				<div class="hero-img">
+					<img src="/images/hero-main.jpg" alt="kiemelt fotó" />
+				</div>
+			</section>
+
+			<!-- Divider sor -->
+			<div class="section-label">
+				<span class="display">Legutóbbi munkáim</span>
+				<a href="/kepek" class="all-link">Összes projekt →</a>
+			</div>
+
+			<!-- Vízszintes képsor -->
+			<section class="strip">
+				{strip.map((p) => (
+					<div class="strip-item">
+						<div class="strip-img">
+							<img src={p.src} alt="fotó" loading="lazy" />
+						</div>
+					</div>
+				))}
+			</section>
+
+		</main>
+
+		<footer>
+		<span>© 2025 Seletye Odett</span>
+		<div class="footer-links">
+			<a href="mailto:odettphotography@gmail.com">E-mail</a>
+			<a href="https://instagram.com/odettphoto" target="_blank" rel="noopener">Instagram</a>
+			<a href="https://tiktok.com/@odettphoto" target="_blank" rel="noopener">TikTok</a>
+		</div>
+	</footer>
+
+	</div>
 </Layout>
+
+<style>
+	.site-wrap {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+
+	/* ── HEADER ── */
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 22px 32px;
+		border-bottom: 1px solid #999;
+	}
+
+	.logo {
+		font-family: 'Barlow Condensed', sans-serif;
+		font-weight: 700;
+		font-size: 1.3rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	nav {
+		display: flex;
+		gap: 32px;
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #555;
+	}
+
+	nav a:hover { color: #111; }
+
+	/* ── HERO ── */
+	.hero {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		border-bottom: 1px solid #999;
+	}
+
+	.hero-text {
+		padding: 48px 32px 48px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		border-right: 1px solid #999;
+	}
+
+	.hero-name {
+		font-size: clamp(4rem, 10vw, 9rem);
+		line-height: 0.9;
+		color: #111;
+	}
+
+	.hero-name span {
+		display: block;
+	}
+
+	.hero-sub {
+		font-size: 0.8rem;
+		color: #777;
+		line-height: 1.7;
+		letter-spacing: 0.03em;
+		margin-top: 32px;
+	}
+
+	.hero-img {
+		width: 100%;
+		aspect-ratio: 3/4;
+		background: #ccc;
+		overflow: hidden;
+	}
+
+	.hero-img img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* ── SECTION LABEL ── */
+	.section-label {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 14px 32px;
+		border-bottom: 1px solid #999;
+	}
+
+	.section-label .display {
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+	}
+
+	.all-link {
+		font-size: 0.78rem;
+		color: #777;
+	}
+
+	.all-link:hover { color: #111; }
+
+	.strip {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		align-items: stretch;
+	}
+
+	.strip-item {
+		border-right: 1px solid transparent;
+	}
+
+	.strip-item:last-child { border-right: none; }
+
+	.strip-img {
+		width: 100%;
+		min-height: 400px;
+		height: 100%;
+		background: #ccc;
+		overflow: hidden;
+	}
+
+	.strip-img img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.4s ease;
+	}
+
+	.strip-item:hover .strip-img img {
+		transform: scale(1.04);
+	}
+
+	/* ── FOOTER ── */
+	footer {
+		margin-top: auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 16px 32px;
+		border-top: 1px solid #999;
+		font-size: 0.78rem;
+		color: #666;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.footer-links {
+		display: flex;
+		gap: 20px;
+	}
+
+	.footer-links a:hover,
+	footer a:hover { color: #111; }
+
+	/* ── RESPONSIVE ── */
+	@media (max-width: 800px) {
+		.hero { grid-template-columns: 1fr; }
+		.hero-text { border-right: none; border-bottom: 1px solid #999; }
+		.hero-name { font-size: clamp(3.5rem, 14vw, 6rem); }
+		.strip { grid-template-columns: repeat(3, 1fr); }
+		header { padding: 18px 16px; }
+		.section-label { padding: 12px 16px; }
+		footer { padding: 16px; }
+	}
+
+	@media (max-width: 480px) {
+		.strip { grid-template-columns: repeat(2, 1fr); }
+		nav { gap: 18px; }
+	}
+</style>
