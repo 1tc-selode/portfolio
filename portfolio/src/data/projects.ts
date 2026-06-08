@@ -21,12 +21,12 @@ export function formatDate(date: string): string {
 export const projects: Project[] = [
 	{
 		slug: 'philautia 2026-05-30',
-		title: 'Philautia Press Photos',
+		title: 'Philaūtia Press Photos',
 		category: 'Más',
 		date: '2026-05-26',
 		description: '',
 		credits: [
-			{ role: 'Zenekar', name: 'Philautia', url: 'https://www.instagram.com/philautia.zenekar/' },
+			{ role: 'Zenekar', name: 'Philaūtia', url: 'https://www.instagram.com/philautia.zenekar/' },
 		],
 		cover: '/images/philautia 2026-05-30/DSC03425.jpg',
 		folder: 'images/philautia 2026-05-30',
