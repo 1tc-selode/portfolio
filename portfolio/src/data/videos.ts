@@ -45,7 +45,7 @@ export const videos: Video[] = [
 			{ role: 'Modell', name: 'Jul Eran', url: 'https://www.instagram.com/jul.eran/' },
 
 		],
-		folder: 'images/common ground',
+		folder: '',
 		description: '',
 	},
 	{
@@ -62,7 +62,7 @@ export const videos: Video[] = [
 			{ role: 'Modell', name: 'Jul Eran', url: 'https://www.instagram.com/jul.eran/' },
 
 		],
-		folder: 'images/common ground',
+		folder: '',
 		description: '',
 	},
 	{
@@ -92,7 +92,7 @@ export const videos: Video[] = [
 		date: '2026-03-06',
 		cover: '/images/gyuris debrecen 2026.03.06/thumbnail.png',
 		url: 'https://youtu.be/I0_si-sfPYs',
-		folder: 'images/gyuris debrecen 2026.03.06',
+		folder: '',
 		description: 'Gyuris koncertvideója, amit 2026 márciusában készítettem a debreceni Víztoronykertben.',
 	},
 ];

@@ -96,6 +96,7 @@ if (video.folder) {
 			{galleryPhotos.length > 0 && (
 				<Fragment>
 					<h2 class="gallery-heading">Galéria</h2>
+					<div class="photos-loading" id="gallery-loading">Betöltés…</div>
 					<div class="video-gallery">
 						<div class="gallery-col" id="gcol-0"></div>
 						<div class="gallery-col" id="gcol-1"></div>
@@ -122,6 +123,8 @@ if (video.folder) {
 				let remaining = galleryPhotos.length;
 
 				function placeImages() {
+					const loading = document.getElementById('gallery-loading');
+					if (loading) loading.style.display = 'none';
 					galleryPhotos.forEach((src, i) => {
 						const shortest = colHeights.indexOf(Math.min(...colHeights));
 						colHeights[shortest] += ratios[i];
@@ -340,6 +343,18 @@ if (video.folder) {
 		font-weight: 400;
 		margin-top: 56px;
 		margin-bottom: 32px;
+	}
+
+	.photos-loading {
+		grid-column: 1 / -1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 300px;
+		font-size: 0.85rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: #aaa;
 	}
 
 	.video-gallery {
