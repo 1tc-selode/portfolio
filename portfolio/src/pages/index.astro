@@ -180,11 +180,13 @@ const recent = allWork
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
 		align-items: stretch;
+		overflow: hidden;
 	}
 
 	.strip-item {
 		position: relative;
 		display: block;
+		min-width: 0;
 		border-right: 1px solid transparent;
 		text-decoration: none;
 		color: inherit;
