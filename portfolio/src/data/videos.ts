@@ -69,7 +69,7 @@ export const videos: Video[] = [
 		slug: 'marslakók-real-jarat',
 		title: 'Marslakók — REAL JÁRAT',
 		category: 'Videóklip',
-		date: '2024-01-01',
+		date: '2026-01-01',
 		cover: '/images/marslakok real jarat/marslakokrealjarat.png',
 		url: 'https://www.youtube.com/watch?v=wVHqRU9VJlg',
 		folder: 'images/marslakok real jarat',
