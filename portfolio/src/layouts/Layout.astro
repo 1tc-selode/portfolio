@@ -16,11 +16,22 @@
 		<slot />
 	</body>
 	<script>
+		// Disable right-click on images and videos
 		document.addEventListener('contextmenu', (e) => {
-			if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault();
+			const tag = (e.target as HTMLElement).tagName;
+			if (tag === 'IMG' || tag === 'VIDEO') e.preventDefault();
 		});
+		// Disable drag on images and videos
 		document.addEventListener('dragstart', (e) => {
-			if ((e.target as HTMLElement).tagName === 'IMG') e.preventDefault();
+			const tag = (e.target as HTMLElement).tagName;
+			if (tag === 'IMG' || tag === 'VIDEO') e.preventDefault();
+		});
+		// Block common shortcuts: Ctrl+U (source), Ctrl+S (save), Ctrl+Shift+I/J (devtools)
+		document.addEventListener('keydown', (e) => {
+			if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) e.preventDefault();
+			if (e.ctrlKey && (e.key === 's' || e.key === 'S')) e.preventDefault();
+			if (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I')) e.preventDefault();
+			if (e.ctrlKey && e.shiftKey && (e.key === 'j' || e.key === 'J')) e.preventDefault();
 		});
 	</script>
 </html>

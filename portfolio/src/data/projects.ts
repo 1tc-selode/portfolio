@@ -123,7 +123,7 @@ export const projects: Project[] = [
 	},
 	{
 		slug: 'co-lee-2025',
-		title: 'Co Lee',
+		title: 'Co Lee & Indigo',
 		category: 'Koncert',
 		date: '2025-09-27',
 		description: 'Debrecen, Víztorony\nSupport: Indigó.',
