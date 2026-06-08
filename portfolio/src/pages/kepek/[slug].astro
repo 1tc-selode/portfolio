@@ -41,8 +41,14 @@ if (photos.length === 0 && project.folder) {
 		<!-- Bal oldal: sticky info -->
 		<aside class="project-info">
 			<div class="info-top">
-				<p class="back"><a href="/kepek"><- Vissza</a></p>
+				<p class="back"><a href="/kepek" id="back-btn"><- Vissza</a></p>
 			</div>
+			<script>
+				const btn = document.getElementById('back-btn');
+				if (btn && document.referrer && document.referrer !== window.location.href) {
+					btn.addEventListener('click', (e) => { e.preventDefault(); history.back(); });
+				}
+			</script>
 			<div class="info-body">
 				<h1 class="project-title display">{project.title}</h1>
 				<div class="meta-row">

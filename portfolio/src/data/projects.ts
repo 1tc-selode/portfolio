@@ -20,6 +20,24 @@ export function formatDate(date: string): string {
 
 export const projects: Project[] = [
 	{
+		slug: 'kolibri 2026-04-11',
+		title: 'Kolibri',
+		category: 'Koncert',
+		date: '2026-04-11',
+		description: 'Debrecen - Víztorony',
+		cover: '/images/kolibri 2026-04-11/DSC04719 másolat.jpg',
+		folder: 'images/kolibri 2026-04-11',
+	},
+	{
+		slug: 'elefant-2026-03-28',
+		title: 'Elefánt',
+		category: 'Koncert',
+		date: '2026-03-28',
+		description: 'Debrecen - Klinika Klub',
+		cover: '/images/elefant 2026-03-28/DSC00626-Enhanced-NR.jpg',
+		folder: 'images/elefant 2026-03-28',
+	},
+	{
 		slug: 'kain 2026-03-06',
 		title: 'Kain',
 		category: 'Koncert',
