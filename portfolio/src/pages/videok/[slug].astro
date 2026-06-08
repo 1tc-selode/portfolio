@@ -80,7 +80,9 @@ if (video.folder) {
 		<div class="video-area">
 			{embedUrl ? (
 				<div class="video-embed">
+					<div class="video-loading" id="video-loading">Betöltés…</div>
 					<iframe
+						id="video-iframe"
 						src={embedUrl}
 						frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -116,6 +118,15 @@ if (video.folder) {
 		</div>
 
 		<script define:vars={{ galleryPhotos, videoTitle: video.title }}>
+			// Hide video loading overlay when iframe loads
+			const iframe = document.getElementById('video-iframe');
+			if (iframe) {
+				iframe.addEventListener('load', () => {
+					const vl = document.getElementById('video-loading');
+					if (vl) vl.style.display = 'none';
+				});
+			}
+
 			if (galleryPhotos.length > 0) {
 				const cols = [document.getElementById('gcol-0'), document.getElementById('gcol-1'), document.getElementById('gcol-2')];
 				const colHeights = [0, 0, 0];
@@ -378,6 +389,20 @@ if (video.folder) {
 		position: relative;
 		width: 100%;
 		aspect-ratio: 16/9;
+	}
+
+	.video-loading {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #f5f4f0;
+		font-size: 0.85rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: #aaa;
 	}
 
 	.video-embed iframe {
