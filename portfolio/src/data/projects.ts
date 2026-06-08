@@ -20,6 +20,28 @@ export function formatDate(date: string): string {
 
 export const projects: Project[] = [
 	{
+		slug: 'tamara 2026-05-26',
+		title: 'Minták és rétegek look',
+		category: 'Editorial',
+		date: '2026-05-26',
+		description: '',
+		credits: [
+			{ role: 'Ruha', name: 'Geröly Tamara', url: 'https://www.instagram.com/geroly_tex/' },
+			{ role: 'Modell', name: 'Geröly Tamás', url: 'https://www.instagram.com/tenddency/' },
+		],
+		cover: '/images/tamara 2026-05-26/DSC01002 (1).jpg',
+		folder: 'images/tamara 2026-05-26',
+	},
+	{
+		slug: 'co lee 2026-05-02',
+		title: 'Co Lee',
+		category: 'Koncert',
+		date: '2026-05-02',
+		description: 'Budapest Park',
+		cover: '/images/co lee 2026-05-02/DSC08228 másolat.jpg',
+		folder: 'images/co lee 2026-05-02',
+	},
+	{
 		slug: 'kolibri 2026-04-11',
 		title: 'Kolibri',
 		category: 'Koncert',
@@ -121,7 +143,7 @@ export const projects: Project[] = [
 		date: '2025-10-31',
 		description: '',
 		credits: [
-			{ role: 'Modell', name: 'Gezma Villő', url: 'https://www.instagram.com/villogezma/' },
+			{ role: 'Modell', name: 'Gemza Villő', url: 'https://www.instagram.com/villogemza/' },
 		],
 		cover: '/images/villogezma 2025-10-31/DSC05949.jpg',
 		folder: 'images/villogezma 2025-10-31',
@@ -170,7 +192,7 @@ export const projects: Project[] = [
 		slug: 'kavezo',
 		title: 'Kávézó',
 		category: 'Kávézó',
-		date: '2026-05-07',
+		date: '2026-01-01',
 		description: 'Kávézós fotósorozat. Különböző időpontokban készült képek egybe gyűjtve.',
 		cover: '/images/kávézó/DSC01905.jpg',
 		folder: 'images/kávézó',

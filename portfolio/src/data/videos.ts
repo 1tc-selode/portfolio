@@ -12,6 +12,26 @@ export interface Video {
 
 export const videos: Video[] = [
 	{
+		slug: 'ganba-mango-matcha',
+		title: 'Mango matcha',
+		category: 'Kávézó',
+		date: '2025-08-26',
+		cover: '/images/kávézó/Képernyőfelvétel (185).png',
+		url: 'https://youtu.be/jQCWLC7hlzE?si=zKBz9l8ZPylkLiJN',
+		folder: '',
+		description: 'Debrecen - Ganba Coffe',
+	},
+	{
+		slug: 'ganba-the-milk',
+		title: 'The milk',
+		category: 'Kávézó',
+		date: '2025-10-03',
+		cover: '/images/kávézó/Képernyőfelvétel (180).png',
+		url: 'https://youtu.be/P22r8lOWah8',
+		folder: '',
+		description: 'Debrecen - Ganba Coffe',
+	},
+	{
 		slug: 'ameliore-common-ground-i-2026-02-20',
 		title: 'COMMON GROUND I/IV',
 		category: 'Shorts',
